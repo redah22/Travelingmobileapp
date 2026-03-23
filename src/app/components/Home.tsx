@@ -198,7 +198,7 @@ export function Home() {
 
         {/* Tags */}
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", position: "relative" }}>
-          {["React", "React Router", "Mobile-first", "Glassmorphism"].map((tag) => (
+          {["React", "React Router", "Mobile-first", "Glassmorphism", "IA intégrée"].map((tag) => (
             <span
               key={tag}
               style={{
@@ -307,7 +307,7 @@ export function Home() {
             { label: "Bouton Y aller GPS", color: "#FF6B35", bg: "#FFF3EE" },
             { label: "Publication + Annotation", color: "#7C3AED", bg: "#F5F3FF" },
             { label: "Profil & Groupes privés", color: "#10B981", bg: "#ECFDF5" },
-            { label: "Itinéraire carte", color: "#1E5BF5", bg: "#EEF3FF" },
+            { label: "Itinéraire carte + PDF", color: "#1E5BF5", bg: "#EEF3FF" },
           ].map(({ label, color, bg }) => (
             <span
               key={label}
@@ -340,7 +340,7 @@ export function Home() {
             <ConnectedFeedScreen />
           </MobileFrame>
 
-          <MobileFrame title="Publication & Annotation" stepNumber={2}>
+          <MobileFrame title="Publication & Annotation IA" stepNumber={2}>
             <PublishScreen />
           </MobileFrame>
 
@@ -434,10 +434,11 @@ export function Home() {
                   ["Commenter une publication", "✗", "✓"],
                   ["Suivre un voyageur", "✗", "✓"],
                   ["Publier une photo", "✗", "✓"],
-                  ["Annoter (Texte)", "✗", "✓"],
+                  ["Annoter (Texte + IA)", "✗", "✓"],
                   ["Y aller (GPS)", "✗", "✓"],
                   ["Profil personnel", "✗", "✓"],
                   ["Créer des groupes privés", "✗", "✓"],
+                  ["Exporter itinéraire PDF", "✗", "✓"],
                 ].map(([feature, guest, connected], i) => (
                   <tr
                     key={i}

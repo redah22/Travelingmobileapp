@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, MessageCircle, Share2, MapPin, Navigation2, Search, MoreHorizontal } from "lucide-react";
+import { Heart, MessageCircle, Share2, MapPin, Navigation2, Search, MoreHorizontal, Mic, Flag, Bell, SlidersHorizontal } from "lucide-react";
 import { StatusBar, ConnectedBottomBar } from "./SharedComponents";
 
 const AVATAR_ME = "https://images.unsplash.com/photo-1699811250804-f240e347c831?w=80&q=80";
@@ -51,6 +51,10 @@ const INITIAL_POSTS = [
 
 export function ConnectedFeedScreen() {
   const [posts, setPosts] = useState(INITIAL_POSTS);
+  const [reportedPost, setReportedPost] = useState<number | null>(null);
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<string>("Tout");
 
   const toggleLike = (id: number) => {
     setPosts((prev) =>
@@ -117,21 +121,39 @@ export function ConnectedFeedScreen() {
           />
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <button
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 10,
-              backgroundColor: "#EEF3FF",
-              border: "none",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <Search size={17} color="#1E5BF5" />
-          </button>
+          {/* Search + Mic */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <button
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 10,
+                backgroundColor: "#EEF3FF",
+                border: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <Search size={17} color="#1E5BF5" />
+            </button>
+            <button
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 10,
+                backgroundColor: "#FFF3EE",
+                border: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <Mic size={17} color="#FF6B35" />
+            </button>
+          </div>
           <img
             src={AVATAR_ME}
             alt="me"
@@ -143,12 +165,121 @@ export function ConnectedFeedScreen() {
               border: "2.5px solid #1E5BF5",
             }}
           />
+          {/* Bell */}
+          <div style={{ position: "relative" }}>
+            <button
+              onClick={() => setShowNotifications(!showNotifications)}
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 10,
+                backgroundColor: showNotifications ? "#EEF3FF" : "#F7F9FF",
+                border: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <Bell size={17} color="#1A1A2E" />
+            </button>
+            <div
+              style={{
+                position: "absolute",
+                top: 6,
+                right: 6,
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: "#EF4444",
+                border: "2px solid white",
+              }}
+            />
+          </div>
         </div>
       </div>
 
+      {/* Notification Panel */}
+      {showNotifications && (
+        <div
+          style={{
+            position: "absolute",
+            top: 100,
+            left: 16,
+            right: 16,
+            backgroundColor: "white",
+            borderRadius: 16,
+            boxShadow: "0 8px 32px rgba(0,0,0,0.14)",
+            zIndex: 30,
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ padding: "12px 16px", borderBottom: "1px solid #F1F5F9", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E" }}>Notifications</span>
+            <span style={{ fontSize: 11, color: "#1E5BF5", fontWeight: 600 }}>Tout marquer lu</span>
+          </div>
+          {[
+            { avatar: AVATAR_2, text: "sophie_voyage a publié une nouvelle photo à Santorin", time: "2 min", unread: true },
+            { avatar: AVATAR_1, text: "pierre_travel a aimé votre publication", time: "15 min", unread: true },
+            { avatar: AVATAR_3, text: "alex_rando vous suit maintenant", time: "1h", unread: false },
+            { avatar: AVATAR_1, text: "Nouvelle photo dans le groupe \"Europe 2026\"", time: "3h", unread: false },
+          ].map((notif, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "10px 16px",
+                backgroundColor: notif.unread ? "#F0F5FF" : "white",
+                borderBottom: "1px solid #F1F5F9",
+              }}
+            >
+              <img src={notif.avatar} style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 12, color: "#1A1A2E", margin: 0, lineHeight: 1.4 }}>{notif.text}</p>
+                <span style={{ fontSize: 10, color: "#94A3B8" }}>{notif.time}</span>
+              </div>
+              {notif.unread && <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: "#1E5BF5", flexShrink: 0 }} />}
+            </div>
+          ))}
+        </div>
+      )}
 
-
-      {/* Feed */}
+      {/* Filter chips */}
+      <div
+        style={{
+          backgroundColor: "white",
+          paddingBottom: 10,
+          paddingTop: 6,
+          flexShrink: 0,
+          borderBottom: "1px solid #F1F5F9",
+        }}
+      >
+        <div style={{ display: "flex", gap: 8, paddingLeft: 16, overflowX: "auto" }}>
+          {["Tout", "Nature", "Culture", "Gastronomie", "Par auteur", "Autour de moi", "Similaire"].map((f) => (
+            <button
+              key={f}
+              onClick={() => setActiveFilter(f)}
+              style={{
+                padding: "6px 14px",
+                borderRadius: 20,
+                border: activeFilter === f ? "none" : "1.5px solid #E2E8F0",
+                backgroundColor: activeFilter === f ? "#1E5BF5" : "white",
+                color: activeFilter === f ? "white" : "#64748B",
+                fontSize: 12,
+                fontWeight: 600,
+                cursor: "pointer",
+                flexShrink: 0,
+                transition: "all 0.15s",
+              }}
+            >
+              {f}
+            </button>
+          ))}
+          <div style={{ width: 16, flexShrink: 0 }} />
+        </div>
+      </div>
       <div style={{ flex: 1, overflowY: "auto" }}>
         {posts.map((post) => (
           <div
@@ -205,9 +336,49 @@ export function ConnectedFeedScreen() {
                   </div>
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, position: "relative" }}>
                 <span style={{ fontSize: 11, color: "#94A3B8" }}>{post.timeAgo}</span>
-                <MoreHorizontal size={18} color="#94A3B8" />
+                <button
+                  onClick={() => setOpenMenuId(openMenuId === post.id ? null : post.id)}
+                  style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                >
+                  <MoreHorizontal size={18} color="#94A3B8" />
+                </button>
+                {openMenuId === post.id && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 24,
+                      right: 0,
+                      backgroundColor: "white",
+                      borderRadius: 12,
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+                      padding: "8px 0",
+                      zIndex: 10,
+                      minWidth: 150,
+                    }}
+                  >
+                    <button
+                      onClick={() => { setReportedPost(post.id); setOpenMenuId(null); }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        width: "100%",
+                        padding: "8px 14px",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "#EF4444",
+                        fontSize: 13,
+                        fontWeight: 600,
+                      }}
+                    >
+                      <Flag size={14} />
+                      Signaler un abus
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -344,6 +515,29 @@ export function ConnectedFeedScreen() {
         ))}
         <div style={{ height: 8 }} />
       </div>
+
+      {/* Report Toast */}
+      {reportedPost !== null && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 80,
+            left: 20,
+            right: 20,
+            backgroundColor: "#EF4444",
+            borderRadius: 12,
+            padding: "12px 16px",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            zIndex: 20,
+            boxShadow: "0 4px 16px rgba(239,68,68,0.3)",
+          }}
+        >
+          <Flag size={16} color="white" />
+          <span style={{ fontSize: 13, fontWeight: 600, color: "white" }}>Signalement envoyé — Merci !</span>
+        </div>
+      )}
 
       <ConnectedBottomBar active="home" avatarUrl={AVATAR_ME} />
     </div>

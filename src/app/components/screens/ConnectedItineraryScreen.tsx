@@ -1,4 +1,5 @@
-import { Navigation2, Clock, Sun, Thermometer, ChevronLeft, Share2 } from "lucide-react";
+import { useState } from "react";
+import { Navigation2, Clock, Sun, Thermometer, ChevronLeft, Share2, Download, Heart, Bookmark } from "lucide-react";
 import { ConnectedBottomBar } from "./SharedComponents";
 
 interface Stop {
@@ -42,6 +43,8 @@ const STOPS: Stop[] = [
 ];
 
 export function ConnectedItineraryScreen() {
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   return (
     <div
       style={{
@@ -151,22 +154,58 @@ export function ConnectedItineraryScreen() {
             <ChevronLeft size={14} color="#64748B" />
             <span style={{ fontSize: 12, fontWeight: 600, color: "#64748B" }}>Retour</span>
           </button>
-          <button
-            style={{
-              width: 36,
-              height: 36,
-              backgroundColor: "white",
-              borderRadius: 10,
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            }}
-          >
-            <Share2 size={16} color="#64748B" />
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <button
+              onClick={() => setIsLiked(!isLiked)}
+              style={{
+                width: 36,
+                height: 36,
+                backgroundColor: isLiked ? "#FFF0F5" : "white",
+                borderRadius: 10,
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              }}
+            >
+              <Heart size={16} color={isLiked ? "#EC4899" : "#64748B"} fill={isLiked ? "#EC4899" : "none"} />
+            </button>
+            <button
+              onClick={() => setIsSaved(!isSaved)}
+              style={{
+                width: 36,
+                height: 36,
+                backgroundColor: isSaved ? "#EEF3FF" : "white",
+                borderRadius: 10,
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              }}
+            >
+              <Bookmark size={16} color={isSaved ? "#1E5BF5" : "#64748B"} fill={isSaved ? "#1E5BF5" : "none"} />
+            </button>
+            <button
+              style={{
+                width: 36,
+                height: 36,
+                backgroundColor: "white",
+                borderRadius: 10,
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              }}
+            >
+              <Share2 size={16} color="#64748B" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -235,7 +274,7 @@ export function ConnectedItineraryScreen() {
             <Thermometer size={13} color="#93C5FD" />
             <span style={{ fontSize: 11, fontWeight: 600, color: "white" }}>Ensoleillé</span>
           </div>
-          
+
         </div>
       </div>
 
@@ -355,6 +394,31 @@ export function ConnectedItineraryScreen() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Export PDF */}
+        <div style={{ padding: "0 16px", marginTop: 12 }}>
+          <button
+            style={{
+              width: "100%",
+              padding: 14,
+              backgroundColor: "#1E5BF5",
+              color: "white",
+              borderRadius: 12,
+              border: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              fontSize: 14,
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(30,91,245,0.25)",
+            }}
+          >
+            <Download size={16} />
+            Exporter itinéraire en PDF
+          </button>
         </div>
 
         <div style={{ height: 12 }} />
