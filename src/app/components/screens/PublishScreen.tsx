@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, X, ChevronDown, Sparkles, Type, Tag, Globe, Users, Lock } from "lucide-react";
+import { MapPin, X, ChevronDown, Type, Tag, Globe, Users, Lock } from "lucide-react";
 import { StatusBar } from "./SharedComponents";
 
 const PUBLISH_IMAGE = "https://images.unsplash.com/photo-1681834418277-b01c30279693?w=400&q=80";
@@ -9,7 +9,7 @@ export function PublishScreen() {
   const [caption, setCaption] = useState(
     "Les aurores boréales en Islande, un moment magique que je n'oublierai jamais ✨🌌"
   );
-  const [activeAnnotation, setActiveAnnotation] = useState<"text" | "audio" | "ai" | null>("ai");
+  const [activeAnnotation, setActiveAnnotation] = useState<"text" | null>("text");
   const [visibility, setVisibility] = useState<"public" | "friends" | "private">("public");
   const tags = ["#islande", "#auroreboreale", "#voyage", "#nature"];
 
@@ -174,7 +174,6 @@ export function PublishScreen() {
           >
             {[
               { id: "text", icon: Type, label: "Texte" },
-              { id: "ai", icon: Sparkles, label: "IA" },
             ].map(({ id, icon: Icon, label }) => (
               <button
                 key={id}
@@ -215,29 +214,6 @@ export function PublishScreen() {
             ))}
           </div>
 
-          {/* AI suggestion chip */}
-          {activeAnnotation === "ai" && (
-            <div
-              style={{
-                position: "absolute",
-                bottom: 12,
-                left: 12,
-                right: 60,
-                backgroundColor: "rgba(124,58,237,0.9)",
-                borderRadius: 12,
-                padding: "8px 12px",
-                backdropFilter: "blur(8px)",
-              }}
-            >
-              <p style={{ fontSize: 11, fontWeight: 600, color: "white", margin: "0 0 4px" }}>
-                ✨ Suggestion IA
-              </p>
-              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.85)", margin: 0, lineHeight: 1.4 }}>
-                "Islande, 21 mars 2026 — Aurore boréale 
-                au-dessus du lac Þingvallavatn"
-              </p>
-            </div>
-          )}
         </div>
 
         {/* Location */}

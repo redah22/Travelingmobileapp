@@ -198,7 +198,7 @@ export function Home() {
 
         {/* Tags */}
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", position: "relative" }}>
-          {["React", "React Router", "Mobile-first", "Glassmorphism", "IA intégrée"].map((tag) => (
+          {["React", "React Router", "Mobile-first", "Glassmorphism"].map((tag) => (
             <span
               key={tag}
               style={{
@@ -340,7 +340,7 @@ export function Home() {
             <ConnectedFeedScreen />
           </MobileFrame>
 
-          <MobileFrame title="Publication & Annotation IA" stepNumber={2}>
+          <MobileFrame title="Publication & Annotation" stepNumber={2}>
             <PublishScreen />
           </MobileFrame>
 
@@ -434,7 +434,7 @@ export function Home() {
                   ["Commenter une publication", "✗", "✓"],
                   ["Suivre un voyageur", "✗", "✓"],
                   ["Publier une photo", "✗", "✓"],
-                  ["Annoter (Texte + IA)", "✗", "✓"],
+                  ["Annoter (Texte)", "✗", "✓"],
                   ["Y aller (GPS)", "✗", "✓"],
                   ["Profil personnel", "✗", "✓"],
                   ["Créer des groupes privés", "✗", "✓"],
