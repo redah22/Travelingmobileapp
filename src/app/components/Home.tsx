@@ -303,11 +303,11 @@ export function Home() {
         <div style={{ display: "flex", gap: 10, marginBottom: 28, flexWrap: "wrap" }}>
           {[
             { label: "Like / Commentaire actifs", color: "#EC4899", bg: "#FDF2F8" },
-            { label: "Stories & abonnements", color: "#1E5BF5", bg: "#EEF3FF" },
+            { label: "S'abonner à un voyage", color: "#1E5BF5", bg: "#EEF3FF" },
             { label: "Bouton Y aller GPS", color: "#FF6B35", bg: "#FFF3EE" },
-            { label: "Publication + Annotation IA", color: "#7C3AED", bg: "#F5F3FF" },
+            { label: "Publication + Annotation", color: "#7C3AED", bg: "#F5F3FF" },
             { label: "Profil & Groupes privés", color: "#10B981", bg: "#ECFDF5" },
-            { label: "Itinéraire carte + PDF", color: "#1E5BF5", bg: "#EEF3FF" },
+            { label: "Itinéraire carte", color: "#1E5BF5", bg: "#EEF3FF" },
           ].map(({ label, color, bg }) => (
             <span
               key={label}
@@ -434,12 +434,10 @@ export function Home() {
                   ["Commenter une publication", "✗", "✓"],
                   ["Suivre un voyageur", "✗", "✓"],
                   ["Publier une photo", "✗", "✓"],
-                  ["Annoter avec l'IA", "✗", "✓"],
+                  ["Annoter (Texte + IA)", "✗", "✓"],
                   ["Y aller (GPS)", "✗", "✓"],
-                  ["Stories & abonnements", "✗", "✓"],
                   ["Profil personnel", "✗", "✓"],
                   ["Créer des groupes privés", "✗", "✓"],
-                  ["Exporter itinéraire PDF", "✗", "✓"],
                 ].map(([feature, guest, connected], i) => (
                   <tr
                     key={i}

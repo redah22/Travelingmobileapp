@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, X, ChevronDown, Mic, Sparkles, Type, Tag, Globe, Users, Lock } from "lucide-react";
+import { MapPin, X, ChevronDown, Sparkles, Type, Tag, Globe, Users, Lock } from "lucide-react";
 import { StatusBar } from "./SharedComponents";
 
 const PUBLISH_IMAGE = "https://images.unsplash.com/photo-1681834418277-b01c30279693?w=400&q=80";
@@ -174,7 +174,6 @@ export function PublishScreen() {
           >
             {[
               { id: "text", icon: Type, label: "Texte" },
-              { id: "audio", icon: Mic, label: "Audio" },
               { id: "ai", icon: Sparkles, label: "IA" },
             ].map(({ id, icon: Icon, label }) => (
               <button

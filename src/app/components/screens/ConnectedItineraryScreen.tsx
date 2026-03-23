@@ -1,4 +1,4 @@
-import { Navigation2, Clock, Download, Sun, CloudRain, Thermometer, ChevronLeft, Share2 } from "lucide-react";
+import { Navigation2, Clock, Sun, Thermometer, ChevronLeft, Share2 } from "lucide-react";
 import { ConnectedBottomBar } from "./SharedComponents";
 
 interface Stop {
@@ -235,18 +235,7 @@ export function ConnectedItineraryScreen() {
             <Thermometer size={13} color="#93C5FD" />
             <span style={{ fontSize: 11, fontWeight: 600, color: "white" }}>Ensoleillé</span>
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-              backgroundColor: "rgba(16,185,129,0.25)",
-              borderRadius: 20,
-              padding: "5px 10px",
-            }}
-          >
-            <span style={{ fontSize: 11, fontWeight: 700, color: "#6EE7B7" }}>✓ Généré par IA</span>
-          </div>
+          
         </div>
       </div>
 
@@ -367,29 +356,6 @@ export function ConnectedItineraryScreen() {
             </div>
           ))}
         </div>
-
-        {/* Export button */}
-        <button
-          style={{
-            width: "100%",
-            marginTop: 18,
-            padding: "14px",
-            background: "linear-gradient(135deg, #1E5BF5, #7C3AED)",
-            borderRadius: 16,
-            border: "none",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            boxShadow: "0 4px 14px rgba(30,91,245,0.35)",
-          }}
-        >
-          <Download size={17} color="white" />
-          <span style={{ fontSize: 14, fontWeight: 700, color: "white" }}>
-            Exporter en PDF
-          </span>
-        </button>
 
         <div style={{ height: 12 }} />
       </div>

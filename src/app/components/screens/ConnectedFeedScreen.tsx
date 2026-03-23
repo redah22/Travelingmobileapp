@@ -7,14 +7,6 @@ const AVATAR_1 = "https://images.unsplash.com/photo-1585675444601-25e0f56bc7c1?w
 const AVATAR_2 = "https://images.unsplash.com/photo-1760341682621-8cf8b97e4cbb?w=80&q=80";
 const AVATAR_3 = "https://images.unsplash.com/photo-1692571825592-f1618a10ab77?w=80&q=80";
 
-const STORIES = [
-  { id: "me", label: "Moi", avatar: AVATAR_ME, isMe: true },
-  { id: "1", label: "pierre_t", avatar: AVATAR_1, isMe: false, active: true },
-  { id: "2", label: "sophie_v", avatar: AVATAR_2, isMe: false, active: true },
-  { id: "3", label: "alex_rnd", avatar: AVATAR_3, isMe: false, active: false },
-  { id: "4", label: "marie_b", avatar: "", isMe: false, active: true },
-];
-
 const INITIAL_POSTS = [
   {
     id: 1,
@@ -59,7 +51,6 @@ const INITIAL_POSTS = [
 
 export function ConnectedFeedScreen() {
   const [posts, setPosts] = useState(INITIAL_POSTS);
-  const [activeStory, setActiveStory] = useState<string | null>(null);
 
   const toggleLike = (id: number) => {
     setPosts((prev) =>
@@ -155,112 +146,7 @@ export function ConnectedFeedScreen() {
         </div>
       </div>
 
-      {/* Stories */}
-      <div
-        style={{
-          backgroundColor: "white",
-          padding: "12px 0 14px 16px",
-          display: "flex",
-          gap: 14,
-          overflowX: "auto",
-          scrollbarWidth: "none",
-          borderBottom: "1px solid #F1F5F9",
-          flexShrink: 0,
-        }}
-      >
-        {STORIES.map((story) => (
-          <button
-            key={story.id}
-            onClick={() => setActiveStory(story.id)}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 5,
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              flexShrink: 0,
-            }}
-          >
-            <div
-              style={{
-                width: 54,
-                height: 54,
-                borderRadius: "50%",
-                padding: 2.5,
-                background:
-                  story.isMe
-                    ? "#E2E8F0"
-                    : story.active
-                    ? "linear-gradient(45deg, #FF6B35, #1E5BF5, #7C3AED)"
-                    : "#E2E8F0",
-              }}
-            >
-              {story.isMe ? (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "50%",
-                    backgroundColor: "#EEF3FF",
-                    border: "2px solid white",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span style={{ fontSize: 20, lineHeight: 1 }}>+</span>
-                </div>
-              ) : story.avatar ? (
-                <img
-                  src={story.avatar}
-                  alt=""
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    border: "2px solid white",
-                  }}
-                />
-              ) : (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "50%",
-                    background: "linear-gradient(135deg, #1E5BF5, #7C3AED)",
-                    border: "2px solid white",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span style={{ fontSize: 18, color: "white" }}>
-                    {story.label[0].toUpperCase()}
-                  </span>
-                </div>
-              )}
-            </div>
-            <span
-              style={{
-                fontSize: 10,
-                color: "#1A1A2E",
-                fontWeight: story.isMe ? 700 : 400,
-                maxWidth: 54,
-                textAlign: "center",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {story.label}
-            </span>
-          </button>
-        ))}
-        <div style={{ width: 8, flexShrink: 0 }} />
-      </div>
+
 
       {/* Feed */}
       <div style={{ flex: 1, overflowY: "auto" }}>
