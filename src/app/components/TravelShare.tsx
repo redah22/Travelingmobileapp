@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Heart, MessageCircle, ArrowLeft, Plus } from 'lucide-react';
+import { Heart, MessageCircle, ArrowLeft, Plus, Search, Users, UserPlus } from 'lucide-react';
 import { Button } from './ui/button';
+import { useAuth } from '../contexts/AuthContext';
 
 interface Post {
   id: number;
@@ -79,9 +80,18 @@ const initialPosts: Post[] = [
 
 export function TravelShare() {
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
   const [posts, setPosts] = useState<Post[]>(initialPosts);
 
   const handleLike = (postId: number) => {
+    if (!isAuthenticated) {
+      // Mode invité : incitation à se connecter
+      if (confirm('Connectez-vous pour aimer des photos. Voulez-vous vous connecter ?')) {
+        navigate('/login');
+      }
+      return;
+    }
+
     setPosts(posts.map(post => {
       if (post.id === postId) {
         return {
@@ -94,19 +104,105 @@ export function TravelShare() {
     }));
   };
 
+  const handlePublish = () => {
+    if (!isAuthenticated) {
+      if (confirm('Connectez-vous pour publier des photos. Voulez-vous vous connecter ?')) {
+        navigate('/login');
+      }
+      return;
+    }
+    navigate('/publish-photo');
+  };
+
+  const handleGroups = () => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+    navigate('/groups');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-3 flex items-center">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate('/')}
-          className="mr-3"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </Button>
-        <h1 className="text-xl font-semibold">TravelShare</h1>
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-3">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate('/')}
+              className="mr-3"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <h1 className="text-xl font-semibold">TravelShare</h1>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate('/search')}
+            >
+              <Search className="w-5 h-5" />
+            </Button>
+            
+            {isAuthenticated ? (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleGroups}
+                >
+                  <Users className="w-5 h-5" />
+                </Button>
+                <div className="relative">
+                  <button
+                    onClick={() => navigate('/profile')}
+                    className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-semibold hover:scale-110 transition-transform"
+                  >
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <Button
+                onClick={() => navigate('/login')}
+                size="sm"
+                variant="outline"
+              >
+                <UserPlus className="w-4 h-4 mr-1" />
+                Connexion
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* Guest Banner */}
+        {!isAuthenticated && (
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-3 text-sm">
+            <p className="text-blue-800 mb-2">
+              <strong>Mode découverte</strong> - Connectez-vous pour publier, commenter et créer des groupes
+            </p>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => navigate('/register')}
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                S'inscrire
+              </Button>
+              <Button
+                onClick={() => navigate('/login')}
+                size="sm"
+                variant="outline"
+              >
+                Se connecter
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Feed */}
@@ -124,11 +220,12 @@ export function TravelShare() {
               </div>
             </div>
 
-            {/* Post Image */}
+            {/* Post Image - Clickable */}
             <img
               src={post.image}
               alt={post.location}
-              className="w-full aspect-square object-cover"
+              className="w-full aspect-square object-cover cursor-pointer hover:opacity-95 transition-opacity"
+              onClick={() => navigate(`/photo/${post.id}`)}
             />
 
             {/* Post Actions */}
@@ -146,6 +243,7 @@ export function TravelShare() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  onClick={() => navigate(`/photo/${post.id}`)}
                   className="flex items-center gap-2 text-gray-700"
                 >
                   <MessageCircle className="w-6 h-6" />
@@ -153,7 +251,12 @@ export function TravelShare() {
                 </Button>
               </div>
 
-              <div className="font-semibold text-sm">{post.location}</div>
+              <div
+                className="font-semibold text-sm cursor-pointer hover:text-blue-600"
+                onClick={() => navigate(`/photo/${post.id}`)}
+              >
+                {post.location}
+              </div>
             </div>
           </div>
         ))}
@@ -161,7 +264,7 @@ export function TravelShare() {
 
       {/* Floating Add Button */}
       <Button
-        onClick={() => alert('Publier une photo (fonctionnalité à venir)')}
+        onClick={handlePublish}
         className="fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-2xl bg-gradient-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 flex items-center justify-center"
       >
         <Plus className="w-6 h-6 text-white" />
